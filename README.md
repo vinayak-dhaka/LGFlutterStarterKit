@@ -3,17 +3,6 @@ Simply describe your Liquid Galaxy app idea, and the system will guide you throu
 
 
 
-# LG Flutter Starter Kit
-
-A reusable Flutter starter kit for building Liquid Galaxy applications, designed for the Gemini Summer of Code contest.
-
-## 🎯 Purpose
-This project provides:
-- A clean Flutter skeleton for Liquid Galaxy apps
-- Prebuilt SSH and command services
-- Environment-aware LG interaction
-- Agentic workflow to generate future apps using Gemini + Antigravity
-
 ## 🏗️ Architecture
 
 lib/
