@@ -1,16 +1,65 @@
-# lg_flutter_starter_kit
+This repository includes an Antigravity agent pipeline.
+Simply describe your Liquid Galaxy app idea, and the system will guide you through design, implementation, and testing automatically.
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# LG Flutter Starter Kit
 
-A few resources to get you started if this is your first Flutter project:
+A reusable Flutter starter kit for building Liquid Galaxy applications, designed for the Gemini Summer of Code contest.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🎯 Purpose
+This project provides:
+- A clean Flutter skeleton for Liquid Galaxy apps
+- Prebuilt SSH and command services
+- Environment-aware LG interaction
+- Agentic workflow to generate future apps using Gemini + Antigravity
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🏗️ Architecture
+
+lib/
+core/ → constants & utilities
+services/
+lg/ → connection, commands, environment detection
+api/ → external APIs (Wikipedia example)
+presentation/
+screens/ → UI pages
+widgets/ → reusable widgets
+
+
+## 🤖 Agent System
+
+Located in `.agent/`
+
+Pipeline:
+
+Init → Brainstorm → Plan → Execute → Review → Quiz
+
+
+These skills guide Gemini to generate Flutter LG apps using this starter kit.
+
+## 🚀 Running
+
+1. Run Flutter app
+2. Enter LG Master IP, username, password
+3. Connect
+4. Test commands or generate demo app
+
+## 🧪 Demo Features
+
+- SSH connection to LG
+- Example LG commands
+- External API integration example (Wikipedia → KML marker)
+
+## 📹 Contest Deliverables
+
+This repo includes:
+
+✔ Flutter starter kit  
+✔ Agentic system (.agent folder)  
+✔ Documentation  
+
+A separate repo demonstrates an app generated using this system.
+
+---
+
+Built for **Gemini Summer of Code 2026**.

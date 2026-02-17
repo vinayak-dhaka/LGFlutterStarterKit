@@ -3,28 +3,41 @@ import 'package:http/http.dart' as http;
 
 class WikipediaService {
 
-  Future<Map<String, dynamic>?> searchPlace(String query) async {
+  Future<Map<String, dynamic>?> searchPlace(String place) async {
 
-    final url = Uri.parse(
-      'https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gscoord=28.6139|77.2090&gsradius=10000&gslimit=10&format=json'
-    );
+    final url =
+        "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=$place&format=json";
 
-    final response = await http.get(url);
+    final res = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+    if (res.statusCode != 200) return null;
 
-      if (data['query']['geosearch'].isNotEmpty) {
-        final place = data['query']['geosearch'][0];
+    final data = jsonDecode(res.body);
 
-        return {
-          "name": place["title"],
-          "lat": place["lat"],
-          "lon": place["lon"],
-        };
-      }
-    }
+    if (data["query"]["search"].isEmpty) return null;
 
-    return null;
+    final title = data["query"]["search"][0]["title"];
+
+    final geoUrl =
+        "https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&titles=$title&format=json";
+
+    final geoRes = await http.get(Uri.parse(geoUrl));
+
+    if (geoRes.statusCode != 200) return null;
+
+    final geoData = jsonDecode(geoRes.body);
+
+    final pages = geoData["query"]["pages"];
+    final page = pages.values.first;
+
+    if (page["coordinates"] == null) return null;
+
+    final coord = page["coordinates"][0];
+
+    return {
+      "name": title,
+      "lat": coord["lat"],
+      "lon": coord["lon"],
+    };
   }
 }

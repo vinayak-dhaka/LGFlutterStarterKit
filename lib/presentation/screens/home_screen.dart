@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/lg/lg_connection_service.dart';
 import '../../services/lg/lg_command_service.dart';
+import '../../services/api/wikipedia_service.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ipController = TextEditingController();
   final userController = TextEditingController(text: "lg");
   final passController = TextEditingController();
+   final placeController = TextEditingController();
 
   String status = "Not connected";
 
@@ -101,6 +104,15 @@ Future<void> connect() async {
     ),
 
     const SizedBox(height: 20),
+    TextField(
+  controller: placeController,
+  decoration: const InputDecoration(
+    labelText: "Enter place name",
+    hintText: "Delhi, Paris, Tokyo...",
+  ),
+),
+const SizedBox(height: 20),
+
 
     /// 🔥 CONNECT BUTTON (THIS WAS MISSING)
     ElevatedButton(
@@ -148,24 +160,44 @@ Future<void> connect() async {
     ),
 
     /// SHOW DEMO KML
-    ElevatedButton(
-      onPressed: status.contains("Connected")
-          ? () async {
+ ElevatedButton(
+  onPressed: lg.isConnected
+      ? () async {
+          final cmd = LGCommandService(
+            lg,
+            ipController.text.trim(),
+          );
 
-              final cmd = LGCommandService(
-                lg,
-                ipController.text.trim(),
-              );
+          await cmd.showDemoKml();
+        }
+      : null,
+  child: const Text("Show Demo KML"),
+),
 
-              final kml = await rootBundle.loadString(
-                'assets/kml/demo.kml',
-              );
+ElevatedButton(
+  onPressed: lg.isConnected
+      ? () async {
 
-              await cmd.uploadDemoKML(kml);
-            }
-          : null,
-      child: const Text("Show Demo KML"),
-    ),
+          final place = placeController.text.trim();
+          if (place.isEmpty) return;
+
+          final wiki = WikipediaService();
+          final cmd = LGCommandService(lg, ipController.text.trim());
+
+          final result = await wiki.searchPlace(place);
+
+          if (result != null) {
+            await cmd.showPlacemark(
+              name: result["name"],
+              lat: result["lat"],
+              lon: result["lon"],
+            );
+          }
+        }
+      : null,
+  child: const Text("Search Place → Show on LG"),
+),
+
 
   ],
 ),
